@@ -94,7 +94,7 @@ const Dashboard = () => {
   return (
     <Box>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 0.5 }}>
+        <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 0.5, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>
           Welcome back, {user.name.split(' ')[0]}
         </Typography>
         <Typography variant="body1" color="text.secondary">
@@ -123,8 +123,8 @@ const Dashboard = () => {
       <Grid container spacing={3} sx={{ mt: 1 }}>
         {stats && (
           <Grid item xs={12} md={4}>
-            <Paper sx={{ p: 3, height: 400, display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a' }}>Student Distribution</Typography>
+            <Paper sx={{ p: 3, height: { xs: 320, md: 400 }, display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Student Distribution</Typography>
               <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -149,8 +149,8 @@ const Dashboard = () => {
           </Grid>
         )}
         <Grid item xs={12} md={stats ? 8 : 12}>
-          <Paper sx={{ p: 3, height: 400, display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a' }}>Enrollment Trends</Typography>
+          <Paper sx={{ p: 3, height: { xs: 320, md: 400 }, display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Enrollment Trends</Typography>
             <Box sx={{ flexGrow: 1 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={enrollmentData}>
@@ -175,7 +175,7 @@ const Dashboard = () => {
       <Grid container spacing={3} sx={{ mt: 1 }}>
         <Grid item xs={12} md={6}>
           <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a' }}>Recent Announcements</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Recent Announcements</Typography>
             <List>
               {announcements.map((a, i) => (
                 <ListItem key={a._id} divider={i < announcements.length - 1} sx={{ px: 0, py: 1.5 }}>
@@ -194,7 +194,7 @@ const Dashboard = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a' }}>Quick Actions</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Quick Actions</Typography>
             <Grid container spacing={2}>
               {[
                 { label: 'View Courses', path: '/courses', color: '#0f4c81' },
@@ -202,7 +202,7 @@ const Dashboard = () => {
                 { label: 'Request Document', path: '/documents', color: '#f39c12' },
                 { label: 'View Profile', path: '/profile', color: '#27ae60' },
               ].map((action) => (
-                <Grid item xs={6} key={action.label}>
+                <Grid item xs={12} sm={6} key={action.label}>
                   <Card sx={{ p: 2, cursor: 'pointer', '&:hover': { bgcolor: action.color + '08', transform: 'translateY(-2px)' } }} onClick={() => navigate(action.path)}>
                     <Typography variant="body2" sx={{ fontWeight: 600, color: action.color }}>{action.label}</Typography>
                   </Card>

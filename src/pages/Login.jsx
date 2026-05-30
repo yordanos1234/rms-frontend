@@ -59,7 +59,7 @@ const Login = () => {
             <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 5, background: 'linear-gradient(90deg, #0f4c81, #2980b9, #27ae60)' }} />
             <Box sx={{ textAlign: 'center', mb: 4 }}>
               <Avatar sx={{ bgcolor: '#0f4c81', width: 64, height: 64, mx: 'auto', mb: 2, boxShadow: '0 8px 24px rgba(15,76,129,0.25)' }}><School sx={{ fontSize: 32 }} /></Avatar>
-              <Typography variant="h5" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 0.5 }}>Welcome Back</Typography>
+              <Typography variant="h5" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 0.5, fontSize: { xs: '1.25rem', md: '1.5rem' } }}>Welcome Back</Typography>
               <Typography variant="body2" color="text.secondary">Sign in to your RMS account</Typography>
             </Box>
 
@@ -99,7 +99,7 @@ const Login = () => {
                 ['instructor@rms.com', 'Instructor'],
                 ['elham@rms.com', 'Student'],
               ].map(([email, role]) => (
-                <Box key={email} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5, cursor: 'pointer', p: 0.5, borderRadius: 1, '&:hover': { bgcolor: 'rgba(15,76,129,0.04)' } }}
+                <Box key={email} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 0.5, mb: 0.5, cursor: 'pointer', p: 0.5, borderRadius: 1, '&:hover': { bgcolor: 'rgba(15,76,129,0.04)' } }}
                   onClick={() => { setValues({ email, password: 'password123' }); }}>
                   <Typography variant="caption" sx={{ color: '#1a2a3a', fontFamily: 'monospace' }}>{email}</Typography>
                   <Typography variant="caption" sx={{ color: '#2980b9', fontWeight: 600 }}>{role}</Typography>

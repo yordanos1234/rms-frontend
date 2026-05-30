@@ -112,7 +112,7 @@ const Grades = () => {
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a' }}>Grades</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Grades</Typography>
             <Typography variant="body2" color="text.secondary">View and manage student academic grades</Typography>
           </Box>
           {user.role === 'instructor' && (
@@ -120,7 +120,7 @@ const Grades = () => {
           )}
         </Box>
 
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
           <Table>
             <TableHead><TableRow sx={{ bgcolor: '#0f4c81' }}>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Student</TableCell>
@@ -184,7 +184,7 @@ const Grades = () => {
               </Select>
               {touched.course && errors.course && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.course}</Typography>}
             </FormControl>
-            <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
+            <Box sx={{ display: 'flex', gap: 2, mt: 1, flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField fullWidth label="Midterm" type="number" value={values.midterm} onChange={(e) => handleChange('midterm')(e)} onBlur={handleBlur('midterm')} error={touched.midterm && !!errors.midterm} helperText={touched.midterm && errors.midterm} />
               <TextField fullWidth label="Assignment" type="number" value={values.assignment} onChange={(e) => handleChange('assignment')(e)} onBlur={handleBlur('assignment')} error={touched.assignment && !!errors.assignment} helperText={touched.assignment && errors.assignment} />
               <TextField fullWidth label="Final" type="number" value={values.final} onChange={(e) => handleChange('final')(e)} onBlur={handleBlur('final')} error={touched.final && !!errors.final} helperText={touched.final && errors.final} />

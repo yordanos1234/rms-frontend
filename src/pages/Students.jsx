@@ -39,15 +39,24 @@ const Students = () => {
     setFiltered(students.filter(s => (s.studentId?.toLowerCase().includes(term)) || (s.user?.name?.toLowerCase().includes(term)) || (s.program?.toLowerCase().includes(term))));
   }, [search, students]);
 
-  const fetchData = () => {
+  const fetchData = async () => {
     setLoading(true); setError('');
-    Promise.all([axios.get('/api/students'), axios.get('/api/users')])
-      .then(([sRes, uRes]) => {
-        setStudents(sRes.data); setFiltered(sRes.data);
-        setUsers(uRes.data.filter(u => u.role === 'student'));
-        setLoading(false);
-      })
-      .catch(() => { setError('Failed to load students'); setLoading(false); });
+    try {
+      const sRes = await axios.get('/api/students');
+      setStudents(sRes.data); setFiltered(sRes.data);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to load students');
+      setLoading(false);
+      return;
+    }
+    try {
+      const uRes = await axios.get('/api/users');
+      setUsers(uRes.data.filter(u => u.role === 'student'));
+    } catch (err) {
+      // Non-critical: users list is only needed for the "Add Student" dropdown
+      console.warn('Could not load users list:', err.response?.data?.message);
+    }
+    setLoading(false);
   };
 
   const handleCreate = async () => {
@@ -71,18 +80,18 @@ const Students = () => {
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a' }}>Students</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Students</Typography>
             <Typography variant="body2" color="text.secondary">Manage and view all registered students</Typography>
           </Box>
-          <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
             <TextField placeholder="Search by name, ID or program..." size="small" value={search} onChange={e => setSearch(e.target.value)}
-              sx={{ minWidth: 280, '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+              sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { sm: 280 }, '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
               InputProps={{ startAdornment: <InputAdornment position="start"><Search fontSize="small" sx={{ color: '#5a6a7a' }} /></InputAdornment> }} />
             <Button variant="contained" startIcon={<Add />} onClick={() => { resetForm(); setOpen(true); }} sx={{ borderRadius: 3, textTransform: 'none', fontWeight: 600 }}>Add Student</Button>
           </Box>
         </Box>
 
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
           <Table>
             <TableHead><TableRow sx={{ bgcolor: '#0f4c81' }}>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Student</TableCell>
@@ -126,7 +135,7 @@ const Students = () => {
             {touched.user && errors.user && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.user}</Typography>}
             <TextField fullWidth label="Student ID" margin="dense" required value={values.studentId} onChange={(e) => handleChange('studentId')(e)} onBlur={handleBlur('studentId')} error={touched.studentId && !!errors.studentId} helperText={touched.studentId && errors.studentId} />
             <TextField fullWidth label="Program" margin="dense" required value={values.program} onChange={(e) => handleChange('program')(e)} onBlur={handleBlur('program')} error={touched.program && !!errors.program} helperText={touched.program && errors.program} />
-            <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField fullWidth label="Year" type="number" margin="dense" required value={values.year} onChange={(e) => handleChange('year')(e)} onBlur={handleBlur('year')} error={touched.year && !!errors.year} helperText={touched.year && errors.year} />
               <TextField fullWidth label="Semester" type="number" margin="dense" required value={values.semester} onChange={(e) => handleChange('semester')(e)} onBlur={handleBlur('semester')} error={touched.semester && !!errors.semester} helperText={touched.semester && errors.semester} />
             </Box>

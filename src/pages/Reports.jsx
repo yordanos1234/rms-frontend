@@ -265,7 +265,7 @@ const Reports = () => {
     <Fade in timeout={400}>
       <Box ref={reportRef}>
         <Box sx={{ mb: 3 }}>
-          <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a' }}>Reports & Analytics</Typography>
+          <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Reports & Analytics</Typography>
           <Typography variant="body2" color="text.secondary">Generate and download institutional reports</Typography>
         </Box>
 
@@ -292,7 +292,7 @@ const Reports = () => {
         </Grid>
 
         {/* Downloadable Reports */}
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 3 }}>Downloadable Reports</Typography>
+        <Typography variant="h5" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 3, fontSize: { xs: '1.25rem', md: '1.5rem' } }}>Downloadable Reports</Typography>
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {reportCards.map((r, i) => (
             <Grid item xs={12} md={6} key={i}>
@@ -320,8 +320,8 @@ const Reports = () => {
         {/* Charts */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
-            <Paper sx={{ p: 3, height: 380, display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a' }}>Student Distribution</Typography>
+            <Paper sx={{ p: 3, height: { xs: 300, md: 380 }, display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Student Distribution</Typography>
               <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -343,8 +343,8 @@ const Reports = () => {
             </Paper>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Paper sx={{ p: 3, height: 380 }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a' }}>Grade Distribution</Typography>
+            <Paper sx={{ p: 3, height: { xs: 300, md: 380 } }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Grade Distribution</Typography>
               <ResponsiveContainer width="100%" height="85%">
                 <BarChart data={[
                   { grade: 'A+', count: grades.filter(g => g.grade === 'A+').length },
@@ -371,8 +371,8 @@ const Reports = () => {
 
         <Grid container spacing={3} sx={{ mt: 1 }}>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: 340 }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a' }}>Enrollments by Department</Typography>
+            <Paper sx={{ p: 3, height: { xs: 300, md: 340 } }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Enrollments by Department</Typography>
               <ResponsiveContainer width="100%" height="85%">
                 <BarChart data={barData} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(0,0,0,0.05)" />
@@ -385,8 +385,8 @@ const Reports = () => {
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: 340 }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a' }}>Monthly System Activity</Typography>
+            <Paper sx={{ p: 3, height: { xs: 300, md: 340 } }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Monthly System Activity</Typography>
               <ResponsiveContainer width="100%" height="85%">
                 <AreaChart data={[
                   { month: 'Jan', activity: 120 }, { month: 'Feb', activity: 180 }, { month: 'Mar', activity: 240 },

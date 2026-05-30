@@ -59,7 +59,7 @@ const Register = () => {
             <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 5, background: 'linear-gradient(90deg, #27ae60, #2980b9, #0f4c81)' }} />
             <Box sx={{ textAlign: 'center', mb: 4 }}>
               <Avatar sx={{ bgcolor: '#27ae60', width: 64, height: 64, mx: 'auto', mb: 2, boxShadow: '0 8px 24px rgba(39,174,96,0.25)' }}><School sx={{ fontSize: 32 }} /></Avatar>
-              <Typography variant="h5" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 0.5 }}>Create Account</Typography>
+              <Typography variant="h5" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 0.5, fontSize: { xs: '1.25rem', md: '1.5rem' } }}>Create Account</Typography>
               <Typography variant="body2" color="text.secondary">Join the Registrar Management System</Typography>
             </Box>
 

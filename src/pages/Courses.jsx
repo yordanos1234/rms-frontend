@@ -101,12 +101,12 @@ const Courses = () => {
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a' }}>Courses</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Courses</Typography>
             <Typography variant="body2" color="text.secondary">Browse and manage academic courses</Typography>
           </Box>
-          <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
             <TextField placeholder="Search courses..." size="small" value={search} onChange={e => setSearch(e.target.value)}
-              sx={{ minWidth: 240, '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+              sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { sm: 240 }, '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
               InputProps={{ startAdornment: <InputAdornment position="start"><Search fontSize="small" sx={{ color: '#5a6a7a' }} /></InputAdornment> }} />
             {canEdit && (
               <Button variant="contained" startIcon={<Add />} onClick={() => { resetForm(); setEditMode(false); setEditId(null); setOpen(true); }} sx={{ borderRadius: 3, textTransform: 'none', fontWeight: 600 }}>New Course</Button>
@@ -130,7 +130,7 @@ const Courses = () => {
                       )}
                     </Box>
                   </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', mb: 1 }}>{c.title}</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', mb: 1, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>{c.title}</Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7, minHeight: 48 }}>{c.description || 'No description available.'}</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
                     <Chip label={c.department} size="small" sx={{ bgcolor: '#e8f0fe', color: '#0f4c81' }} />
@@ -155,7 +155,7 @@ const Courses = () => {
           <DialogContent>
             <TextField fullWidth label="Course Code" margin="dense" required value={values.courseCode} onChange={(e) => handleChange('courseCode')(e)} onBlur={handleBlur('courseCode')} error={touched.courseCode && !!errors.courseCode} helperText={touched.courseCode && errors.courseCode} />
             <TextField fullWidth label="Course Title" margin="dense" required value={values.title} onChange={(e) => handleChange('title')(e)} onBlur={handleBlur('title')} error={touched.title && !!errors.title} helperText={touched.title && errors.title} />
-            <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField fullWidth label="Credits" type="number" margin="dense" value={values.credits} onChange={(e) => handleChange('credits')(e)} onBlur={handleBlur('credits')} error={touched.credits && !!errors.credits} helperText={touched.credits && errors.credits} />
               <TextField fullWidth label="Year" type="number" margin="dense" value={values.year} onChange={(e) => handleChange('year')(e)} onBlur={handleBlur('year')} error={touched.year && !!errors.year} helperText={touched.year && errors.year} />
             </Box>

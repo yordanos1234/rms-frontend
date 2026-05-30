@@ -80,7 +80,7 @@ const Announcements = () => {
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a' }}>Announcements</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Announcements</Typography>
             <Typography variant="body2" color="text.secondary">Stay updated with the latest institutional news</Typography>
           </Box>
           {canCreate && (
@@ -96,7 +96,7 @@ const Announcements = () => {
               <Card key={a._id} elevation={0} sx={{ borderLeft: `4px solid ${colors.color}`, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.06)', '&:hover': { boxShadow: '0 8px 32px rgba(0,0,0,0.10)', transform: 'translateY(-2px)' } }}>
                 <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5, flexWrap: 'wrap', gap: 1 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', lineHeight: 1.3 }}>{a.title}</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', lineHeight: 1.3, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>{a.title}</Typography>
                     <Box sx={{ display: 'flex', gap: 0.5 }}>
                       <Chip label={a.targetAudience.replace('_', ' ')} size="small" sx={{ bgcolor: colors.bg, color: colors.color, fontWeight: 700, textTransform: 'capitalize' }} />
                       {isAuthor && (

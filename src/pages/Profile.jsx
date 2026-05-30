@@ -28,12 +28,12 @@ const Profile = () => {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 1 }}>My Profile</Typography>
+      <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 1, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>My Profile</Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>View and manage your account information</Typography>
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 4, textAlign: 'center', height: 'fit-content' }}>
+          <Paper sx={{ p: { xs: 2, md: 4 }, textAlign: 'center', height: 'fit-content' }}>
             <Avatar sx={{
               width: 100, height: 100, mx: 'auto', mb: 2,
               bgcolor: rc.color, fontSize: 36, fontWeight: 800,
@@ -54,8 +54,8 @@ const Profile = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 4 }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', mb: 3 }}>Account Details</Typography>
+          <Paper sx={{ p: { xs: 2, md: 4 } }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', mb: 3, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Account Details</Typography>
             <Grid container spacing={3}>
               {infoItems.map((item, i) => (
                 <Grid item xs={12} sm={6} key={i}>
