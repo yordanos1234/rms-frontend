@@ -3,15 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import {
-  Box, Typography, Grid, Card, CardContent, CircularProgress, Paper, List, ListItem, ListItemText,
+  Box, Typography, Grid, Card, CardContent, Paper, List, ListItem, ListItemText,
   Avatar, Divider, LinearProgress
 } from '@mui/material';
 import {
   School, Book, Description, Group, TrendingUp, CheckCircle, Warning, Schedule
 } from '@mui/icons-material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
+import { ModernSpinner } from '../components/ModernSpinner';
 
-const COLORS = ['#0f4c81', '#27ae60', '#f39c12', '#c0392b', '#8e44ad', '#2980b9'];
+const COLORS = ['#60a5fa', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#38bdf8'];
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -37,34 +38,34 @@ const Dashboard = () => {
 
   const roleCards = {
     student: [
-      { title: 'Program', value: 'BSc Computer Science', icon: <School sx={{ fontSize: 32, color: '#0f4c81' }} />, color: '#e8f0fe', textColor: '#0f4c81' },
-      { title: 'Current Semester', value: '1st Semester 2025', icon: <Schedule sx={{ fontSize: 32, color: '#2980b9' }} />, color: '#e0f2fe', textColor: '#2980b9' },
-      { title: 'Cumulative GPA', value: '3.52', icon: <TrendingUp sx={{ fontSize: 32, color: '#27ae60' }} />, color: '#e8f5e9', textColor: '#27ae60' },
-      { title: 'Academic Status', value: 'Good Standing', icon: <CheckCircle sx={{ fontSize: 32, color: '#8e44ad' }} />, color: '#f3e5f5', textColor: '#8e44ad' },
+      { title: 'Program', value: 'BSc Computer Science', icon: <School sx={{ fontSize: 32, color: '#60a5fa' }} />, color: 'rgba(96,165,250,0.12)', textColor: '#60a5fa' },
+      { title: 'Current Semester', value: '1st Semester 2025', icon: <Schedule sx={{ fontSize: 32, color: '#38bdf8' }} />, color: 'rgba(56,189,248,0.12)', textColor: '#38bdf8' },
+      { title: 'Cumulative GPA', value: '3.52', icon: <TrendingUp sx={{ fontSize: 32, color: '#34d399' }} />, color: 'rgba(52,211,153,0.12)', textColor: '#34d399' },
+      { title: 'Academic Status', value: 'Good Standing', icon: <CheckCircle sx={{ fontSize: 32, color: '#a78bfa' }} />, color: 'rgba(167,139,250,0.12)', textColor: '#a78bfa' },
     ],
     instructor: [
-      { title: 'Courses Teaching', value: '4', icon: <Book sx={{ fontSize: 32, color: '#0f4c81' }} />, color: '#e8f0fe', textColor: '#0f4c81' },
-      { title: 'Total Students', value: '128', icon: <Group sx={{ fontSize: 32, color: '#2980b9' }} />, color: '#e0f2fe', textColor: '#2980b9' },
-      { title: 'Pending Grades', value: '3', icon: <Warning sx={{ fontSize: 32, color: '#f39c12' }} />, color: '#fff8e1', textColor: '#f39c12' },
-      { title: 'Department', value: 'Computer Science', icon: <School sx={{ fontSize: 32, color: '#8e44ad' }} />, color: '#f3e5f5', textColor: '#8e44ad' },
+      { title: 'Courses Teaching', value: '4', icon: <Book sx={{ fontSize: 32, color: '#60a5fa' }} />, color: 'rgba(96,165,250,0.12)', textColor: '#60a5fa' },
+      { title: 'Total Students', value: '128', icon: <Group sx={{ fontSize: 32, color: '#38bdf8' }} />, color: 'rgba(56,189,248,0.12)', textColor: '#38bdf8' },
+      { title: 'Pending Grades', value: '3', icon: <Warning sx={{ fontSize: 32, color: '#fbbf24' }} />, color: 'rgba(251,191,36,0.12)', textColor: '#fbbf24' },
+      { title: 'Department', value: 'Computer Science', icon: <School sx={{ fontSize: 32, color: '#a78bfa' }} />, color: 'rgba(167,139,250,0.12)', textColor: '#a78bfa' },
     ],
     registrar: [
-      { title: 'Total Students', value: stats?.totalStudents || 0, icon: <Group sx={{ fontSize: 32, color: '#0f4c81' }} />, color: '#e8f0fe', textColor: '#0f4c81' },
-      { title: 'Active Courses', value: stats?.totalCourses || 0, icon: <Book sx={{ fontSize: 32, color: '#2980b9' }} />, color: '#e0f2fe', textColor: '#2980b9' },
-      { title: 'Pending Documents', value: stats?.pendingDocs || 0, icon: <Description sx={{ fontSize: 32, color: '#f39c12' }} />, color: '#fff8e1', textColor: '#f39c12' },
-      { title: 'Total Enrollments', value: stats?.totalEnrollments || 0, icon: <School sx={{ fontSize: 32, color: '#27ae60' }} />, color: '#e8f5e9', textColor: '#27ae60' },
+      { title: 'Total Students', value: stats?.totalStudents || 0, icon: <Group sx={{ fontSize: 32, color: '#60a5fa' }} />, color: 'rgba(96,165,250,0.12)', textColor: '#60a5fa' },
+      { title: 'Active Courses', value: stats?.totalCourses || 0, icon: <Book sx={{ fontSize: 32, color: '#38bdf8' }} />, color: 'rgba(56,189,248,0.12)', textColor: '#38bdf8' },
+      { title: 'Pending Documents', value: stats?.pendingDocs || 0, icon: <Description sx={{ fontSize: 32, color: '#fbbf24' }} />, color: 'rgba(251,191,36,0.12)', textColor: '#fbbf24' },
+      { title: 'Total Enrollments', value: stats?.totalEnrollments || 0, icon: <School sx={{ fontSize: 32, color: '#34d399' }} />, color: 'rgba(52,211,153,0.12)', textColor: '#34d399' },
     ],
     admin: [
-      { title: 'Total Students', value: stats?.totalStudents || 0, icon: <Group sx={{ fontSize: 32, color: '#0f4c81' }} />, color: '#e8f0fe', textColor: '#0f4c81' },
-      { title: 'Active Courses', value: stats?.totalCourses || 0, icon: <Book sx={{ fontSize: 32, color: '#2980b9' }} />, color: '#e0f2fe', textColor: '#2980b9' },
-      { title: 'Pending Documents', value: stats?.pendingDocs || 0, icon: <Description sx={{ fontSize: 32, color: '#f39c12' }} />, color: '#fff8e1', textColor: '#f39c12' },
-      { title: 'Active Users', value: stats?.activeStudents || 0, icon: <CheckCircle sx={{ fontSize: 32, color: '#27ae60' }} />, color: '#e8f5e9', textColor: '#27ae60' },
+      { title: 'Total Students', value: stats?.totalStudents || 0, icon: <Group sx={{ fontSize: 32, color: '#60a5fa' }} />, color: 'rgba(96,165,250,0.12)', textColor: '#60a5fa' },
+      { title: 'Active Courses', value: stats?.totalCourses || 0, icon: <Book sx={{ fontSize: 32, color: '#38bdf8' }} />, color: 'rgba(56,189,248,0.12)', textColor: '#38bdf8' },
+      { title: 'Pending Documents', value: stats?.pendingDocs || 0, icon: <Description sx={{ fontSize: 32, color: '#fbbf24' }} />, color: 'rgba(251,191,36,0.12)', textColor: '#fbbf24' },
+      { title: 'Active Users', value: stats?.activeStudents || 0, icon: <CheckCircle sx={{ fontSize: 32, color: '#34d399' }} />, color: 'rgba(52,211,153,0.12)', textColor: '#34d399' },
     ],
     department_head: [
-      { title: 'Dept Students', value: stats?.totalStudents || 0, icon: <Group sx={{ fontSize: 32, color: '#0f4c81' }} />, color: '#e8f0fe', textColor: '#0f4c81' },
-      { title: 'Courses', value: stats?.totalCourses || 0, icon: <Book sx={{ fontSize: 32, color: '#2980b9' }} />, color: '#e0f2fe', textColor: '#2980b9' },
-      { title: 'Enrollments', value: stats?.totalEnrollments || 0, icon: <School sx={{ fontSize: 32, color: '#f39c12' }} />, color: '#fff8e1', textColor: '#f39c12' },
-      { title: 'Graduated', value: stats?.graduatedStudents || 0, icon: <CheckCircle sx={{ fontSize: 32, color: '#27ae60' }} />, color: '#e8f5e9', textColor: '#27ae60' },
+      { title: 'Dept Students', value: stats?.totalStudents || 0, icon: <Group sx={{ fontSize: 32, color: '#60a5fa' }} />, color: 'rgba(96,165,250,0.12)', textColor: '#60a5fa' },
+      { title: 'Courses', value: stats?.totalCourses || 0, icon: <Book sx={{ fontSize: 32, color: '#38bdf8' }} />, color: 'rgba(56,189,248,0.12)', textColor: '#38bdf8' },
+      { title: 'Enrollments', value: stats?.totalEnrollments || 0, icon: <School sx={{ fontSize: 32, color: '#fbbf24' }} />, color: 'rgba(251,191,36,0.12)', textColor: '#fbbf24' },
+      { title: 'Graduated', value: stats?.graduatedStudents || 0, icon: <CheckCircle sx={{ fontSize: 32, color: '#34d399' }} />, color: 'rgba(52,211,153,0.12)', textColor: '#34d399' },
     ]
   };
 
@@ -85,16 +86,13 @@ const Dashboard = () => {
   ];
 
   if (loading) return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', mt: 10, gap: 2 }}>
-      <CircularProgress size={48} thickness={4} sx={{ color: '#0f4c81' }} />
-      <Typography variant="body2" color="text.secondary">Loading your dashboard...</Typography>
-    </Box>
+    <ModernSpinner message="Loading your dashboard..." />
   );
 
   return (
     <Box>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 0.5, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>
+        <Typography variant="h4" sx={{ fontWeight: 800, mb: 0.5, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>
           Welcome back, {user.name.split(' ')[0]}
         </Typography>
         <Typography variant="body1" color="text.secondary">
@@ -110,7 +108,7 @@ const Dashboard = () => {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <Box>
                     <Typography variant="caption" sx={{ color: card.textColor, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{card.title}</Typography>
-                    <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', mt: 0.5 }}>{card.value}</Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 800, mt: 0.5 }}>{card.value}</Typography>
                   </Box>
                   <Avatar sx={{ bgcolor: 'rgba(255,255,255,0.5)', width: 48, height: 48 }}>{card.icon}</Avatar>
                 </Box>
@@ -124,7 +122,7 @@ const Dashboard = () => {
         {stats && (
           <Grid item xs={12} md={4}>
             <Paper sx={{ p: 3, height: { xs: 320, md: 400 }, display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Student Distribution</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Student Distribution</Typography>
               <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -141,7 +139,7 @@ const Dashboard = () => {
                 {chartData.map((entry, index) => (
                   <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: COLORS[index] }} />
-                    <Typography variant="caption" sx={{ color: '#5a6a7a' }}>{entry.name}</Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>{entry.name}</Typography>
                   </Box>
                 ))}
               </Box>
@@ -150,7 +148,7 @@ const Dashboard = () => {
         )}
         <Grid item xs={12} md={stats ? 8 : 12}>
           <Paper sx={{ p: 3, height: { xs: 320, md: 400 }, display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Enrollment Trends</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Enrollment Trends</Typography>
             <Box sx={{ flexGrow: 1 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={enrollmentData}>
@@ -175,16 +173,16 @@ const Dashboard = () => {
       <Grid container spacing={3} sx={{ mt: 1 }}>
         <Grid item xs={12} md={6}>
           <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Recent Announcements</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Recent Announcements</Typography>
             <List>
               {announcements.map((a, i) => (
                 <ListItem key={a._id} divider={i < announcements.length - 1} sx={{ px: 0, py: 1.5 }}>
-                  <Avatar sx={{ bgcolor: a.targetAudience === 'all' ? '#0f4c81' : '#2980b9', width: 36, height: 36, mr: 2, fontSize: 14, fontWeight: 700 }}>
+                  <Avatar sx={{ bgcolor: a.targetAudience === 'all' ? '#60a5fa' : '#38bdf8', width: 36, height: 36, mr: 2, fontSize: 14, fontWeight: 700 }}>
                     {a.targetAudience === 'all' ? 'A' : a.targetAudience[0].toUpperCase()}
                   </Avatar>
                   <ListItemText
-                    primary={<Typography variant="body1" sx={{ fontWeight: 600, color: '#1a2a3a' }}>{a.title}</Typography>}
-                    secondary={<Typography variant="caption" sx={{ color: '#5a6a7a' }}>{a.content.substring(0, 80)}...</Typography>}
+                    primary={<Typography variant="body1" sx={{ fontWeight: 600,  }}>{a.title}</Typography>}
+                    secondary={<Typography variant="caption" sx={{ color: 'text.secondary' }}>{a.content.substring(0, 80)}...</Typography>}
                   />
                 </ListItem>
               ))}
@@ -194,13 +192,13 @@ const Dashboard = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Quick Actions</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Quick Actions</Typography>
             <Grid container spacing={2}>
               {[
-                { label: 'View Courses', path: '/courses', color: '#0f4c81' },
-                { label: 'Check Grades', path: '/grades', color: '#2980b9' },
-                { label: 'Request Document', path: '/documents', color: '#f39c12' },
-                { label: 'View Profile', path: '/profile', color: '#27ae60' },
+                { label: 'View Courses', path: '/courses', color: '#60a5fa' },
+                { label: 'Check Grades', path: '/grades', color: '#38bdf8' },
+                { label: 'Request Document', path: '/documents', color: '#fbbf24' },
+                { label: 'View Profile', path: '/profile', color: '#34d399' },
               ].map((action) => (
                 <Grid item xs={12} sm={6} key={action.label}>
                   <Card sx={{ p: 2, cursor: 'pointer', '&:hover': { bgcolor: action.color + '08', transform: 'translateY(-2px)' } }} onClick={() => navigate(action.path)}>

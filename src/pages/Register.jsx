@@ -8,8 +8,11 @@ import {
 } from '@mui/material';
 import { School } from '@mui/icons-material';
 import { useFormValidation, v } from '../hooks/useFormValidation';
+import { useTheme } from '@mui/material/styles';
 
 const Register = () => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -52,15 +55,15 @@ const Register = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)', py: 4 }}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',       background: isDark ? 'linear-gradient(135deg, #050b14 0%, #0a1525 100%)' : 'linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)', py: 4 }}>
       <Container maxWidth="xs">
         <Fade in timeout={600}>
-          <Paper elevation={0} sx={{ p: { xs: 3, sm: 5 }, borderRadius: 4, boxShadow: '0 12px 48px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <Paper elevation={0} sx={{ p: { xs: 3, sm: 5 }, borderRadius: 4, background: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff', backdropFilter: isDark ? 'blur(20px)' : 'none', border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.06)', boxShadow: isDark ? 'none' : '0 12px 48px rgba(0,0,0,0.08)', position: 'relative', overflow: 'hidden' }}>
             <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 5, background: 'linear-gradient(90deg, #27ae60, #2980b9, #0f4c81)' }} />
             <Box sx={{ textAlign: 'center', mb: 4 }}>
-              <Avatar sx={{ bgcolor: '#27ae60', width: 64, height: 64, mx: 'auto', mb: 2, boxShadow: '0 8px 24px rgba(39,174,96,0.25)' }}><School sx={{ fontSize: 32 }} /></Avatar>
-              <Typography variant="h5" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 0.5, fontSize: { xs: '1.25rem', md: '1.5rem' } }}>Create Account</Typography>
-              <Typography variant="body2" color="text.secondary">Join the Registrar Management System</Typography>
+              <Avatar sx={{ bgcolor: '#34d399', width: 64, height: 64, mx: 'auto', mb: 2, boxShadow: '0 8px 24px rgba(52,211,153,0.25)' }}><School sx={{ fontSize: 32 }} /></Avatar>
+              <Typography variant="h5" sx={{ fontWeight: 800, color: 'text.primary', mb: 0.5, fontSize: { xs: '1.25rem', md: '1.5rem' } }}>Create Account</Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>Join the Registrar Management System</Typography>
             </Box>
 
             <form onSubmit={handleSubmit} noValidate>
@@ -100,8 +103,8 @@ const Register = () => {
               </Button>
             </form>
 
-            <Typography variant="body2" textAlign="center" sx={{ mt: 3, color: '#5a6a7a' }}>
-              Already have an account? <Link to="/login" style={{ color: '#0f4c81', fontWeight: 700, textDecoration: 'none' }}>Sign In</Link>
+            <Typography variant="body2" textAlign="center" sx={{ mt: 3, color: 'rgba(255,255,255,0.5)' }}>
+              Already have an account? <Link to="/login" style={{ color: '#60a5fa', fontWeight: 700, textDecoration: 'none' }}>Sign In</Link>
             </Typography>
           </Paper>
         </Fade>

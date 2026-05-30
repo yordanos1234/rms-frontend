@@ -4,12 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from 'notistack';
 import {
   Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Chip, CircularProgress, Button, Dialog, DialogTitle, DialogContent,
+  Paper, Chip, Button, Dialog, DialogTitle, DialogContent,
   DialogActions, FormControl, InputLabel, Select, MenuItem, TextField, Fade, Avatar,
   IconButton
 } from '@mui/material';
 import { Add, CheckCircle, Delete } from '@mui/icons-material';
 import { useFormValidation, v } from '../hooks/useFormValidation';
+import { ModernSpinner } from '../components/ModernSpinner';
 
 const Documents = () => {
   const { user } = useAuth();
@@ -62,14 +63,14 @@ const Documents = () => {
     } catch (err) { enqueueSnackbar('Failed to delete document', { variant: 'error' }); }
   };
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress size={48} sx={{ color: '#0f4c81' }} /></Box>;
+  if (loading) return <ModernSpinner message="Loading documents..." />;
 
   return (
     <Fade in timeout={400}>
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Documents</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Documents</Typography>
             <Typography variant="body2" color="text.secondary">Request and track academic documents</Typography>
           </Box>
           {user.role === 'student' && (
@@ -79,7 +80,7 @@ const Documents = () => {
 
         <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
           <Table>
-            <TableHead><TableRow sx={{ bgcolor: '#0f4c81' }}>
+            <TableHead><TableRow sx={{ bgcolor: 'rgba(15,76,129,0.4)' }}>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Student</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Type</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Purpose</TableCell>
@@ -91,12 +92,12 @@ const Documents = () => {
               {docs.map((d) => (
                 <TableRow key={d._id} hover sx={{ '&:hover': { bgcolor: '#f8fafc' } }}>
                   <TableCell><Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Avatar sx={{ width: 32, height: 32, bgcolor: '#0f4c81', fontSize: 12 }}>{d.student?.user?.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
+                    <Avatar sx={{ width: 32, height: 32, bgcolor: 'rgba(15,76,129,0.4)', fontSize: 12 }}>{d.student?.user?.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
                     <Typography variant="body2" sx={{ fontWeight: 600 }}>{d.student?.user?.name || d.student?.studentId}</Typography>
                   </Box></TableCell>
-                  <TableCell><Chip label={d.type.replace('_', ' ').toUpperCase()} size="small" sx={{ bgcolor: d.type === 'transcript' ? '#e8f0fe' : d.type === 'enrollment_letter' ? '#e0f2fe' : d.type === 'certificate' ? '#e8f5e9' : '#fff8e1', color: d.type === 'transcript' ? '#0f4c81' : d.type === 'enrollment_letter' ? '#2980b9' : d.type === 'certificate' ? '#27ae60' : '#f39c12', fontWeight: 700 }} /></TableCell>
+                  <TableCell><Chip label={d.type.replace('_', ' ').toUpperCase()} size="small" sx={{ bgcolor: d.type === 'transcript' ? 'rgba(96,165,250,0.12)' : d.type === 'enrollment_letter' ? 'rgba(56,189,248,0.12)' : d.type === 'certificate' ? 'rgba(52,211,153,0.12)' : 'rgba(251,191,36,0.12)', color: d.type === 'transcript' ? '#60a5fa' : d.type === 'enrollment_letter' ? '#38bdf8' : d.type === 'certificate' ? '#34d399' : '#fbbf24', fontWeight: 700 }} /></TableCell>
                   <TableCell sx={{ maxWidth: 200 }}><Typography variant="body2" noWrap>{d.purpose}</Typography></TableCell>
-                  <TableCell align="center"><Chip label={d.status} size="small" sx={{ bgcolor: d.status === 'ready' ? '#e8f5e9' : d.status === 'pending' ? '#fff8e1' : d.status === 'processing' ? '#e0f2fe' : '#f5f5f5', color: d.status === 'ready' ? '#27ae60' : d.status === 'pending' ? '#f39c12' : d.status === 'processing' ? '#2980b9' : '#5a6a7a', fontWeight: 700, textTransform: 'capitalize' }} /></TableCell>
+                  <TableCell align="center"><Chip label={d.status} size="small" sx={{ bgcolor: d.status === 'ready' ? 'rgba(52,211,153,0.12)' : d.status === 'pending' ? 'rgba(251,191,36,0.12)' : d.status === 'processing' ? 'rgba(56,189,248,0.12)' : 'rgba(255,255,255,0.06)', color: d.status === 'ready' ? '#34d399' : d.status === 'pending' ? '#fbbf24' : d.status === 'processing' ? '#38bdf8' : '#5a6a7a', fontWeight: 700, textTransform: 'capitalize' }} /></TableCell>
                   <TableCell align="center">{new Date(d.requestedAt).toLocaleDateString('en-GB')}</TableCell>
                   {user.role !== 'student' && (
                     <TableCell align="center">
@@ -111,7 +112,7 @@ const Documents = () => {
                       )}
                       {['ready','delivered'].includes(d.status) && (
                         <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'center' }}>
-                          <CheckCircle sx={{ color: '#27ae60' }} />
+                          <CheckCircle sx={{ color: '#34d399' }} />
                           <IconButton size="small" color="error" onClick={() => handleDelete(d._id)}><Delete fontSize="small" /></IconButton>
                         </Box>
                       )}
@@ -119,7 +120,7 @@ const Documents = () => {
                   )}
                 </TableRow>
               ))}
-              {docs.length === 0 && <TableRow><TableCell colSpan={6} align="center" sx={{ py: 6, color: '#5a6a7a' }}>No document requests found.</TableCell></TableRow>}
+              {docs.length === 0 && <TableRow><TableCell colSpan={6} align="center" sx={{ py: 6, color: 'text.secondary' }}>No document requests found.</TableCell></TableRow>}
             </TableBody>
           </Table>
         </TableContainer>
@@ -136,7 +137,7 @@ const Documents = () => {
                 <MenuItem value="clearance">Clearance</MenuItem>
                 <MenuItem value="id_card">ID Card</MenuItem>
               </Select>
-              {touched.type && errors.type && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.type}</Typography>}
+              {touched.type && errors.type && <Typography variant="caption" sx={{ color: '#f87171', ml: 1.5 }}>{errors.type}</Typography>}
             </FormControl>
             <TextField fullWidth label="Purpose" margin="dense" multiline rows={2} placeholder="e.g. Graduation application, Internship, Job application..."
               value={values.purpose} onChange={(e) => handleChange('purpose')(e)} onBlur={handleBlur('purpose')}

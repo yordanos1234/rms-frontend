@@ -4,13 +4,14 @@ import { useSnackbar } from 'notistack';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import {
-  Box, Typography, Paper, Grid, CircularProgress, Fade, Button, Avatar, Card, CardContent, Divider,
+  Box, Typography, Paper, Grid, Fade, Button, Avatar, Card, CardContent, Divider,
   Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton
 } from '@mui/material';
 import { Assessment, School, Group, Description, CheckCircle, TrendingUp, Download, PictureAsPdf } from '@mui/icons-material';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, AreaChart, Area } from 'recharts';
+import { ModernSpinner } from '../components/ModernSpinner';
 
-const COLORS = ['#0f4c81', '#27ae60', '#f39c12', '#c0392b', '#8e44ad', '#2980b9'];
+const COLORS = ['#60a5fa', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#38bdf8'];
 
 const Reports = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -243,7 +244,7 @@ const Reports = () => {
     enqueueSnackbar('Comprehensive report downloaded!', { variant: 'success' });
   };
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress size={48} sx={{ color: '#0f4c81' }} /></Box>;
+  if (loading) return <ModernSpinner message="Loading reports..." />;
 
   const pieData = stats ? [
     { name: 'Active', value: stats.activeStudents },
@@ -254,35 +255,35 @@ const Reports = () => {
   const barData = Object.keys(enrollmentByDept).map(k => ({ name: k.split(' ').slice(0, 2).join(' '), value: enrollmentByDept[k] }));
 
   const reportCards = [
-    { title: 'Student Enrollment Report', desc: 'Complete list of all students with their programs, GPA, and status.', icon: <Group sx={{ fontSize: 32, color: '#0f4c81' }} />, color: '#e8f0fe', action: generateEnrollmentPDF },
-    { title: 'Academic Grade Report', desc: 'All submitted and approved grades with student and course details.', icon: <Assessment sx={{ fontSize: 32, color: '#27ae60' }} />, color: '#e8f5e9', action: generateGradePDF },
-    { title: 'Document Processing Report', desc: 'Document request status, processing times, and delivery tracking.', icon: <Description sx={{ fontSize: 32, color: '#f39c12' }} />, color: '#fff8e1', action: generateDocumentPDF },
-    { title: 'Course Catalog Report', desc: 'Full course listing with instructors, credits, and department info.', icon: <School sx={{ fontSize: 32, color: '#2980b9' }} />, color: '#e0f2fe', action: generateCoursePDF },
-    { title: 'Comprehensive Report', desc: 'Executive summary combining enrollment, grades, courses, and analytics.', icon: <PictureAsPdf sx={{ fontSize: 32, color: '#c0392b' }} />, color: '#ffebee', action: generateFullReportPDF },
+    { title: 'Student Enrollment Report', desc: 'Complete list of all students with their programs, GPA, and status.', icon: <Group sx={{ fontSize: 32, color: '#60a5fa' }} />, color: 'rgba(96,165,250,0.12)', action: generateEnrollmentPDF },
+    { title: 'Academic Grade Report', desc: 'All submitted and approved grades with student and course details.', icon: <Assessment sx={{ fontSize: 32, color: '#34d399' }} />, color: 'rgba(52,211,153,0.12)', action: generateGradePDF },
+    { title: 'Document Processing Report', desc: 'Document request status, processing times, and delivery tracking.', icon: <Description sx={{ fontSize: 32, color: '#fbbf24' }} />, color: 'rgba(251,191,36,0.12)', action: generateDocumentPDF },
+    { title: 'Course Catalog Report', desc: 'Full course listing with instructors, credits, and department info.', icon: <School sx={{ fontSize: 32, color: '#38bdf8' }} />, color: 'rgba(56,189,248,0.12)', action: generateCoursePDF },
+    { title: 'Comprehensive Report', desc: 'Executive summary combining enrollment, grades, courses, and analytics.', icon: <PictureAsPdf sx={{ fontSize: 32, color: '#f87171' }} />, color: 'rgba(248,113,113,0.12)', action: generateFullReportPDF },
   ];
 
   return (
     <Fade in timeout={400}>
       <Box ref={reportRef}>
         <Box sx={{ mb: 3 }}>
-          <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Reports & Analytics</Typography>
+          <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Reports & Analytics</Typography>
           <Typography variant="body2" color="text.secondary">Generate and download institutional reports</Typography>
         </Box>
 
         {/* Stat Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {[
-            { title: 'Total Students', value: stats?.totalStudents || 0, icon: <Group sx={{ fontSize: 32, color: '#0f4c81' }} />, color: '#e8f0fe' },
-            { title: 'Active Courses', value: stats?.totalCourses || 0, icon: <School sx={{ fontSize: 32, color: '#2980b9' }} />, color: '#e0f2fe' },
-            { title: 'Total Enrollments', value: stats?.totalEnrollments || 0, icon: <TrendingUp sx={{ fontSize: 32, color: '#27ae60' }} />, color: '#e8f5e9' },
-            { title: 'Pending Documents', value: stats?.pendingDocs || 0, icon: <Description sx={{ fontSize: 32, color: '#f39c12' }} />, color: '#fff8e1' },
+            { title: 'Total Students', value: stats?.totalStudents || 0, icon: <Group sx={{ fontSize: 32, color: '#60a5fa' }} />, color: 'rgba(96,165,250,0.12)' },
+            { title: 'Active Courses', value: stats?.totalCourses || 0, icon: <School sx={{ fontSize: 32, color: '#38bdf8' }} />, color: 'rgba(56,189,248,0.12)' },
+            { title: 'Total Enrollments', value: stats?.totalEnrollments || 0, icon: <TrendingUp sx={{ fontSize: 32, color: '#34d399' }} />, color: 'rgba(52,211,153,0.12)' },
+            { title: 'Pending Documents', value: stats?.pendingDocs || 0, icon: <Description sx={{ fontSize: 32, color: '#fbbf24' }} />, color: 'rgba(251,191,36,0.12)' },
           ].map((card, i) => (
             <Grid item xs={12} sm={6} md={3} key={i}>
               <Card sx={{ bgcolor: card.color, p: 3, borderRadius: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: 'none' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Box>
-                    <Typography variant="caption" sx={{ color: '#5a6a7a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{card.title}</Typography>
-                    <Typography variant="h3" sx={{ fontWeight: 800, color: '#1a2a3a', mt: 0.5 }}>{card.value}</Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{card.title}</Typography>
+                    <Typography variant="h3" sx={{ fontWeight: 800, mt: 0.5 }}>{card.value}</Typography>
                   </Box>
                   <Avatar sx={{ bgcolor: 'rgba(255,255,255,0.6)', width: 56, height: 56 }}>{card.icon}</Avatar>
                 </Box>
@@ -292,7 +293,7 @@ const Reports = () => {
         </Grid>
 
         {/* Downloadable Reports */}
-        <Typography variant="h5" sx={{ fontWeight: 800, color: '#1a2a3a', mb: 3, fontSize: { xs: '1.25rem', md: '1.5rem' } }}>Downloadable Reports</Typography>
+        <Typography variant="h5" sx={{ fontWeight: 800, mb: 3, fontSize: { xs: '1.25rem', md: '1.5rem' } }}>Downloadable Reports</Typography>
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {reportCards.map((r, i) => (
             <Grid item xs={12} md={6} key={i}>
@@ -304,10 +305,10 @@ const Reports = () => {
                 <CardContent sx={{ py: 3, display: 'flex', alignItems: 'flex-start', gap: 2.5 }}>
                   <Avatar sx={{ bgcolor: r.color, color: r.icon.props.sx.color, width: 56, height: 56, flexShrink: 0 }}>{r.icon}</Avatar>
                   <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', mb: 0.5 }}>{r.title}</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>{r.title}</Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6, mb: 2 }}>{r.desc}</Typography>
                     <Button variant="contained" size="small" startIcon={<Download />} onClick={r.action}
-                      sx={{ borderRadius: 2.5, textTransform: 'none', fontWeight: 600, bgcolor: '#0f4c81', '&:hover': { bgcolor: '#0a3560' } }}>
+                      sx={{ borderRadius: 2.5, textTransform: 'none', fontWeight: 600, bgcolor: 'rgba(15,76,129,0.4)', '&:hover': { bgcolor: '#0a3560' } }}>
                       Download PDF
                     </Button>
                   </Box>
@@ -321,7 +322,7 @@ const Reports = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
             <Paper sx={{ p: 3, height: { xs: 300, md: 380 }, display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Student Distribution</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Student Distribution</Typography>
               <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -336,7 +337,7 @@ const Reports = () => {
                 {pieData.map((entry, index) => (
                   <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: COLORS[index] }} />
-                    <Typography variant="caption" sx={{ color: '#5a6a7a' }}>{entry.name}</Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>{entry.name}</Typography>
                   </Box>
                 ))}
               </Box>
@@ -344,7 +345,7 @@ const Reports = () => {
           </Grid>
           <Grid item xs={12} md={8}>
             <Paper sx={{ p: 3, height: { xs: 300, md: 380 } }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Grade Distribution</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Grade Distribution</Typography>
               <ResponsiveContainer width="100%" height="85%">
                 <BarChart data={[
                   { grade: 'A+', count: grades.filter(g => g.grade === 'A+').length },
@@ -372,7 +373,7 @@ const Reports = () => {
         <Grid container spacing={3} sx={{ mt: 1 }}>
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 3, height: { xs: 300, md: 340 } }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Enrollments by Department</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Enrollments by Department</Typography>
               <ResponsiveContainer width="100%" height="85%">
                 <BarChart data={barData} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(0,0,0,0.05)" />
@@ -386,7 +387,7 @@ const Reports = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 3, height: { xs: 300, md: 340 } }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#1a2a3a', fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Monthly System Activity</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>Monthly System Activity</Typography>
               <ResponsiveContainer width="100%" height="85%">
                 <AreaChart data={[
                   { month: 'Jan', activity: 120 }, { month: 'Feb', activity: 180 }, { month: 'Mar', activity: 240 },

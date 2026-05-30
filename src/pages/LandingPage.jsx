@@ -366,7 +366,7 @@ const LandingPage = () => {
                   animation: `${float} 4s ease-in-out infinite`,
                 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Avatar sx={{ width: 32, height: 32, bgcolor: '#27ae60', fontSize: 12, fontWeight: 800 }}>R</Avatar>
+                    <Avatar sx={{ width: 32, height: 32, bgcolor: '#34d399', fontSize: 12, fontWeight: 800 }}>R</Avatar>
                     <Box>
                       <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', display: 'block', fontWeight: 500 }}>Grade Approved</Typography>
                       <Typography variant="body2" sx={{ color: 'white', fontWeight: 700 }}>CS401 - A+</Typography>
@@ -565,7 +565,7 @@ const LandingPage = () => {
                     </Typography>
                     <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)', mb: 2.5 }} />
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                      <Avatar sx={{ bgcolor: '#0f4c81', width: 42, height: 42, fontWeight: 700, fontSize: 14 }}>{t.avatar}</Avatar>
+                      <Avatar sx={{ bgcolor: 'rgba(15,76,129,0.4)', width: 42, height: 42, fontWeight: 700, fontSize: 14 }}>{t.avatar}</Avatar>
                       <Box>
                         <Typography variant="body2" sx={{ fontWeight: 700, color: 'white' }}>{t.name}</Typography>
                         <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>{t.role}</Typography>

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import {
-  Box, Typography, Grid, Card, CardContent, Chip, CircularProgress, Alert, Paper, Button,
+  Box, Typography, Grid, Card, CardContent, Chip, Alert, Paper, Button,
   TextField, InputAdornment, Fade, Dialog, DialogTitle, DialogContent, DialogActions,
   FormControl, InputLabel, Select, MenuItem, Avatar, IconButton
 } from '@mui/material';
 import { Book, Search, Add, Delete, Edit } from '@mui/icons-material';
 import { useAuth } from '../context/AuthContext';
 import { useFormValidation, v } from '../hooks/useFormValidation';
+import { ModernSpinner } from '../components/ModernSpinner';
 
 const Courses = () => {
   const { user } = useAuth();
@@ -94,20 +95,20 @@ const Courses = () => {
 
   const canEdit = ['admin', 'registrar', 'department_head'].includes(user?.role);
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress size={48} sx={{ color: '#0f4c81' }} /></Box>;
+  if (loading) return <ModernSpinner message="Loading courses..." />;
 
   return (
     <Fade in timeout={400}>
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Courses</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Courses</Typography>
             <Typography variant="body2" color="text.secondary">Browse and manage academic courses</Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
             <TextField placeholder="Search courses..." size="small" value={search} onChange={e => setSearch(e.target.value)}
               sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { sm: 240 }, '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
-              InputProps={{ startAdornment: <InputAdornment position="start"><Search fontSize="small" sx={{ color: '#5a6a7a' }} /></InputAdornment> }} />
+              InputProps={{ startAdornment: <InputAdornment position="start"><Search fontSize="small" sx={{ color: 'text.secondary' }} /></InputAdornment> }} />
             {canEdit && (
               <Button variant="contained" startIcon={<Add />} onClick={() => { resetForm(); setEditMode(false); setEditId(null); setOpen(true); }} sx={{ borderRadius: 3, textTransform: 'none', fontWeight: 600 }}>New Course</Button>
             )}
@@ -120,27 +121,27 @@ const Courses = () => {
               <Card sx={{ height: '100%', '&:hover': { transform: 'translateY(-6px)', boxShadow: '0 16px 48px rgba(0,0,0,0.10)' } }}>
                 <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                    <Chip label={c.courseCode} size="small" sx={{ bgcolor: '#0f4c8115', color: '#0f4c81', fontWeight: 700, borderRadius: 1.5 }} />
+                    <Chip label={c.courseCode} size="small" sx={{ bgcolor: '#0f4c8115', color: '#60a5fa', fontWeight: 700, borderRadius: 1.5 }} />
                     <Box sx={{ display: 'flex', gap: 0.5 }}>
                       {canEdit && (
                         <>
-                          <IconButton size="small" onClick={() => handleEdit(c)} sx={{ color: '#2980b9' }}><Edit fontSize="small" /></IconButton>
-                          <IconButton size="small" onClick={() => handleDelete(c._id)} sx={{ color: '#c0392b' }}><Delete fontSize="small" /></IconButton>
+                          <IconButton size="small" onClick={() => handleEdit(c)} sx={{ color: '#38bdf8' }}><Edit fontSize="small" /></IconButton>
+                          <IconButton size="small" onClick={() => handleDelete(c._id)} sx={{ color: '#f87171' }}><Delete fontSize="small" /></IconButton>
                         </>
                       )}
                     </Box>
                   </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', mb: 1, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>{c.title}</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>{c.title}</Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7, minHeight: 48 }}>{c.description || 'No description available.'}</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-                    <Chip label={c.department} size="small" sx={{ bgcolor: '#e8f0fe', color: '#0f4c81' }} />
-                    <Chip label={`Year ${c.year}`} size="small" sx={{ bgcolor: '#f3e5f5', color: '#8e44ad' }} />
+                    <Chip label={c.department} size="small" sx={{ bgcolor: 'rgba(96,165,250,0.12)', color: '#60a5fa' }} />
+                    <Chip label={`Year ${c.year}`} size="small" sx={{ bgcolor: 'rgba(167,139,250,0.12)', color: '#a78bfa' }} />
                     <Chip label={`${c.credits} Credits`} size="small" variant="outlined" sx={{ fontWeight: 500 }} />
                   </Box>
                   {c.instructor && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pt: 1.5, borderTop: '1px solid rgba(0,0,0,0.06)' }}>
-                      <Avatar sx={{ width: 28, height: 28, bgcolor: '#2980b9', fontSize: 12 }}>{c.instructor.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
-                      <Typography variant="caption" sx={{ color: '#5a6a7a', fontWeight: 500 }}>{c.instructor.name}</Typography>
+                      <Avatar sx={{ width: 28, height: 28, bgcolor: '#38bdf8', fontSize: 12 }}>{c.instructor.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
+                      <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>{c.instructor.name}</Typography>
                     </Box>
                   )}
                 </CardContent>
@@ -165,7 +166,7 @@ const Courses = () => {
                 <MenuItem value="1st">1st Semester</MenuItem>
                 <MenuItem value="2nd">2nd Semester</MenuItem>
               </Select>
-              {touched.semester && errors.semester && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.semester}</Typography>}
+              {touched.semester && errors.semester && <Typography variant="caption" sx={{ color: '#f87171', ml: 1.5 }}>{errors.semester}</Typography>}
             </FormControl>
             <TextField fullWidth label="Department" margin="dense" value={values.department} onChange={(e) => handleChange('department')(e)} onBlur={handleBlur('department')} error={touched.department && !!errors.department} helperText={touched.department && errors.department} />
             <TextField fullWidth label="Description" margin="dense" multiline rows={3} value={values.description} onChange={(e) => handleChange('description')(e)} />

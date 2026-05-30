@@ -3,12 +3,13 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from 'notistack';
 import {
-  Box, Typography, Card, CardContent, Chip, CircularProgress, Button, Dialog,
+  Box, Typography, Card, CardContent, Chip, Button, Dialog,
   DialogTitle, DialogContent, DialogActions, TextField, FormControl, InputLabel, Select, MenuItem,
   Fade, Avatar, Divider, IconButton
 } from '@mui/material';
 import { Campaign, Add, Delete, Edit } from '@mui/icons-material';
 import { useFormValidation, v } from '../hooks/useFormValidation';
+import { ModernSpinner } from '../components/ModernSpinner';
 
 const Announcements = () => {
   const { user } = useAuth();
@@ -64,23 +65,23 @@ const Announcements = () => {
   };
 
   const audienceColors = {
-    all: { bg: '#e8f0fe', color: '#0f4c81' },
-    students: { bg: '#e8f5e9', color: '#27ae60' },
-    instructors: { bg: '#e0f2fe', color: '#2980b9' },
-    registrar: { bg: '#f3e5f5', color: '#8e44ad' },
-    department_heads: { bg: '#fff8e1', color: '#f39c12' }
+    all: { bg: 'rgba(96,165,250,0.12)', color: '#60a5fa' },
+    students: { bg: 'rgba(52,211,153,0.12)', color: '#34d399' },
+    instructors: { bg: 'rgba(56,189,248,0.12)', color: '#38bdf8' },
+    registrar: { bg: 'rgba(167,139,250,0.12)', color: '#a78bfa' },
+    department_heads: { bg: 'rgba(251,191,36,0.12)', color: '#fbbf24' }
   };
 
   const canCreate = ['admin', 'registrar', 'department_head'].includes(user.role);
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress size={48} sx={{ color: '#0f4c81' }} /></Box>;
+  if (loading) return <ModernSpinner message="Loading announcements..." />;
 
   return (
     <Fade in timeout={400}>
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Announcements</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Announcements</Typography>
             <Typography variant="body2" color="text.secondary">Stay updated with the latest institutional news</Typography>
           </Box>
           {canCreate && (
@@ -96,28 +97,28 @@ const Announcements = () => {
               <Card key={a._id} elevation={0} sx={{ borderLeft: `4px solid ${colors.color}`, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.06)', '&:hover': { boxShadow: '0 8px 32px rgba(0,0,0,0.10)', transform: 'translateY(-2px)' } }}>
                 <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5, flexWrap: 'wrap', gap: 1 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2a3a', lineHeight: 1.3, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>{a.title}</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.3, fontSize: { xs: '1.125rem', md: '1.25rem' } }}>{a.title}</Typography>
                     <Box sx={{ display: 'flex', gap: 0.5 }}>
                       <Chip label={a.targetAudience.replace('_', ' ')} size="small" sx={{ bgcolor: colors.bg, color: colors.color, fontWeight: 700, textTransform: 'capitalize' }} />
                       {isAuthor && (
                         <>
-                          <IconButton size="small" onClick={() => handleEdit(a)} sx={{ color: '#2980b9' }}><Edit fontSize="small" /></IconButton>
-                          <IconButton size="small" onClick={() => handleDelete(a._id)} sx={{ color: '#c0392b' }}><Delete fontSize="small" /></IconButton>
+                          <IconButton size="small" onClick={() => handleEdit(a)} sx={{ color: '#38bdf8' }}><Edit fontSize="small" /></IconButton>
+                          <IconButton size="small" onClick={() => handleDelete(a._id)} sx={{ color: '#f87171' }}><Delete fontSize="small" /></IconButton>
                         </>
                       )}
                     </Box>
                   </Box>
-                  <Typography variant="body1" sx={{ color: '#5a6a7a', lineHeight: 1.7, mb: 2 }}>{a.content}</Typography>
+                  <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.7, mb: 2 }}>{a.content}</Typography>
                   <Divider sx={{ mb: 1.5 }} />
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Avatar sx={{ width: 28, height: 28, bgcolor: colors.color, fontSize: 12, fontWeight: 700 }}>{a.postedBy?.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
-                    <Typography variant="caption" sx={{ color: '#5a6a7a', fontWeight: 500 }}>{a.postedBy?.name} &bull; {a.postedBy?.role?.replace('_', ' ')} &bull; {new Date(a.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>{a.postedBy?.name} &bull; {a.postedBy?.role?.replace('_', ' ')} &bull; {new Date(a.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</Typography>
                   </Box>
                 </CardContent>
               </Card>
             );
           })}
-          {announcements.length === 0 && <Paper sx={{ p: 6, textAlign: 'center' }}><Campaign sx={{ fontSize: 48, color: '#5a6a7a', mb: 2 }} /><Typography color="text.secondary">No announcements yet.</Typography></Paper>}
+          {announcements.length === 0 && <Paper sx={{ p: 6, textAlign: 'center' }}><Campaign sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} /><Typography color="text.secondary">No announcements yet.</Typography></Paper>}
         </Box>
 
         <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
@@ -134,7 +135,7 @@ const Announcements = () => {
                 <MenuItem value="registrar">Registrar Staff</MenuItem>
                 <MenuItem value="department_heads">Department Heads</MenuItem>
               </Select>
-              {touched.targetAudience && errors.targetAudience && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.targetAudience}</Typography>}
+              {touched.targetAudience && errors.targetAudience && <Typography variant="caption" sx={{ color: '#f87171', ml: 1.5 }}>{errors.targetAudience}</Typography>}
             </FormControl>
           </DialogContent>
           <DialogActions sx={{ px: 3, pb: 3 }}>

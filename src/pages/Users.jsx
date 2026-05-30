@@ -3,11 +3,12 @@ import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import {
   Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Chip, CircularProgress, Alert, TextField, InputAdornment, Avatar, Fade,
+  Paper, Chip, Alert, TextField, InputAdornment, Avatar, Fade,
   Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem, IconButton
 } from '@mui/material';
 import { People, Search, Delete, Add } from '@mui/icons-material';
 import { useFormValidation, v } from '../hooks/useFormValidation';
+import { ModernSpinner } from '../components/ModernSpinner';
 
 const Users = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -66,14 +67,14 @@ const Users = () => {
   };
 
   const roleColors = {
-    admin: { color: '#c0392b', bg: '#ffebee' },
-    registrar: { color: '#f39c12', bg: '#fff8e1' },
-    department_head: { color: '#8e44ad', bg: '#f3e5f5' },
-    instructor: { color: '#2980b9', bg: '#e0f2fe' },
-    student: { color: '#27ae60', bg: '#e8f5e9' }
+    admin: { color: '#f87171', bg: 'rgba(248,113,113,0.12)' },
+    registrar: { color: '#fbbf24', bg: 'rgba(251,191,36,0.12)' },
+    department_head: { color: '#a78bfa', bg: 'rgba(167,139,250,0.12)' },
+    instructor: { color: '#38bdf8', bg: 'rgba(56,189,248,0.12)' },
+    student: { color: '#34d399', bg: 'rgba(52,211,153,0.12)' }
   };
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress size={48} sx={{ color: '#0f4c81' }} /></Box>;
+  if (loading) return <ModernSpinner message="Loading users..." />;
   if (error) return <Alert severity="error" sx={{ borderRadius: 2 }}>{error}</Alert>;
 
   return (
@@ -81,20 +82,20 @@ const Users = () => {
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Users</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Users</Typography>
             <Typography variant="body2" color="text.secondary">Manage system users and access permissions</Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
             <TextField placeholder="Search users..." size="small" value={search} onChange={e => setSearch(e.target.value)}
               sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { sm: 280 }, '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
-              InputProps={{ startAdornment: <InputAdornment position="start"><Search fontSize="small" sx={{ color: '#5a6a7a' }} /></InputAdornment> }} />
+              InputProps={{ startAdornment: <InputAdornment position="start"><Search fontSize="small" sx={{ color: 'text.secondary' }} /></InputAdornment> }} />
             <Button variant="contained" startIcon={<Add />} onClick={() => { resetForm(); setOpen(true); }} sx={{ borderRadius: 3, textTransform: 'none', fontWeight: 600 }}>Add User</Button>
           </Box>
         </Box>
 
         <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
           <Table>
-            <TableHead><TableRow sx={{ bgcolor: '#0f4c81' }}>
+            <TableHead><TableRow sx={{ bgcolor: 'rgba(15,76,129,0.4)' }}>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>User</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Email</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Role</TableCell>
@@ -106,17 +107,17 @@ const Users = () => {
               {filtered.map((u) => (
                 <TableRow key={u._id} hover sx={{ '&:hover': { bgcolor: '#f8fafc' } }}>
                   <TableCell><Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Avatar sx={{ width: 36, height: 36, bgcolor: roleColors[u.role]?.bg || '#e2e8f0', color: roleColors[u.role]?.color || '#5a6a7a', fontWeight: 700, fontSize: 14 }}>{u.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
+                    <Avatar sx={{ width: 36, height: 36, bgcolor: roleColors[u.role]?.bg || 'rgba(255,255,255,0.08)', color: roleColors[u.role]?.color || '#5a6a7a', fontWeight: 700, fontSize: 14 }}>{u.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
                     <Typography variant="body2" sx={{ fontWeight: 600 }}>{u.name}</Typography>
                   </Box></TableCell>
-                  <TableCell sx={{ color: '#5a6a7a', fontFamily: 'monospace', fontSize: '0.875rem' }}>{u.email}</TableCell>
-                  <TableCell><Chip label={u.role?.replace('_', ' ')} size="small" sx={{ bgcolor: roleColors[u.role]?.bg || '#f5f5f5', color: roleColors[u.role]?.color || '#5a6a7a', fontWeight: 700, textTransform: 'capitalize' }} /></TableCell>
+                  <TableCell sx={{ color: 'text.secondary', fontFamily: 'monospace', fontSize: '0.875rem' }}>{u.email}</TableCell>
+                  <TableCell><Chip label={u.role?.replace('_', ' ')} size="small" sx={{ bgcolor: roleColors[u.role]?.bg || 'rgba(255,255,255,0.06)', color: roleColors[u.role]?.color || '#5a6a7a', fontWeight: 700, textTransform: 'capitalize' }} /></TableCell>
                   <TableCell>{u.department || '-'}</TableCell>
                   <TableCell align="center"><Chip label={u.isActive ? 'Active' : 'Inactive'} size="small" color={u.isActive ? 'success' : 'default'} sx={{ fontWeight: 600 }} /></TableCell>
                   <TableCell align="center"><IconButton size="small" color="error" onClick={() => handleDelete(u._id)}><Delete fontSize="small" /></IconButton></TableCell>
                 </TableRow>
               ))}
-              {filtered.length === 0 && <TableRow><TableCell colSpan={6} align="center" sx={{ py: 6, color: '#5a6a7a' }}>No users found.</TableCell></TableRow>}
+              {filtered.length === 0 && <TableRow><TableCell colSpan={6} align="center" sx={{ py: 6, color: 'text.secondary' }}>No users found.</TableCell></TableRow>}
             </TableBody>
           </Table>
         </TableContainer>
@@ -136,7 +137,7 @@ const Users = () => {
                 <MenuItem value="department_head">Department Head</MenuItem>
                 <MenuItem value="admin">Administrator</MenuItem>
               </Select>
-              {touched.role && errors.role && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.role}</Typography>}
+              {touched.role && errors.role && <Typography variant="caption" sx={{ color: '#f87171', ml: 1.5 }}>{errors.role}</Typography>}
             </FormControl>
             <TextField fullWidth label="Department" margin="dense" value={values.department} onChange={(e) => handleChange('department')(e)} onBlur={handleBlur('department')} error={touched.department && !!errors.department} helperText={touched.department && errors.department} />
             <TextField fullWidth label="Phone" margin="dense" placeholder="0911223344" value={values.phone} onChange={(e) => handleChange('phone')(e)} onBlur={handleBlur('phone')} error={touched.phone && !!errors.phone} helperText={touched.phone && errors.phone} />

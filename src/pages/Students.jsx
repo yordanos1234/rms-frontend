@@ -3,11 +3,12 @@ import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import {
   Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Chip, CircularProgress, Alert, TextField, InputAdornment, Avatar, Fade,
+  Paper, Chip, Alert, TextField, InputAdornment, Avatar, Fade,
   Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem
 } from '@mui/material';
 import { School, Search, Add } from '@mui/icons-material';
 import { useFormValidation, v } from '../hooks/useFormValidation';
+import { ModernSpinner } from '../components/ModernSpinner';
 
 const Students = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -72,7 +73,7 @@ const Students = () => {
 
   const statusColor = { active: 'success', graduated: 'primary', suspended: 'error', withdrawn: 'default' };
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress size={48} sx={{ color: '#0f4c81' }} /></Box>;
+  if (loading) return <ModernSpinner message="Loading students..." />;
   if (error) return <Alert severity="error" sx={{ borderRadius: 2 }}>{error}</Alert>;
 
   return (
@@ -80,20 +81,20 @@ const Students = () => {
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Students</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Students</Typography>
             <Typography variant="body2" color="text.secondary">Manage and view all registered students</Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
             <TextField placeholder="Search by name, ID or program..." size="small" value={search} onChange={e => setSearch(e.target.value)}
               sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { sm: 280 }, '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
-              InputProps={{ startAdornment: <InputAdornment position="start"><Search fontSize="small" sx={{ color: '#5a6a7a' }} /></InputAdornment> }} />
+              InputProps={{ startAdornment: <InputAdornment position="start"><Search fontSize="small" sx={{ color: 'text.secondary' }} /></InputAdornment> }} />
             <Button variant="contained" startIcon={<Add />} onClick={() => { resetForm(); setOpen(true); }} sx={{ borderRadius: 3, textTransform: 'none', fontWeight: 600 }}>Add Student</Button>
           </Box>
         </Box>
 
         <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
           <Table>
-            <TableHead><TableRow sx={{ bgcolor: '#0f4c81' }}>
+            <TableHead><TableRow sx={{ bgcolor: 'rgba(15,76,129,0.4)' }}>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Student</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Student ID</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Program</TableCell>
@@ -105,20 +106,20 @@ const Students = () => {
               {filtered.map((s) => (
                 <TableRow key={s._id} hover sx={{ '&:hover': { bgcolor: '#f8fafc' } }}>
                   <TableCell><Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Avatar sx={{ width: 36, height: 36, bgcolor: '#0f4c81', fontSize: 14, fontWeight: 700 }}>{s.user?.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
+                    <Avatar sx={{ width: 36, height: 36, bgcolor: 'rgba(15,76,129,0.4)', fontSize: 14, fontWeight: 700 }}>{s.user?.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
                     <Typography variant="body2" sx={{ fontWeight: 600 }}>{s.user?.name}</Typography>
                   </Box></TableCell>
-                  <TableCell sx={{ fontFamily: 'monospace', color: '#5a6a7a' }}>{s.studentId}</TableCell>
+                  <TableCell sx={{ fontFamily: 'monospace', color: 'text.secondary' }}>{s.studentId}</TableCell>
                   <TableCell>{s.program}</TableCell>
                   <TableCell>Year {s.year} - Sem {s.semester}</TableCell>
                   <TableCell><Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Typography variant="body2" sx={{ fontWeight: 700, color: s.gpa >= 3.5 ? '#27ae60' : s.gpa >= 2.5 ? '#2980b9' : '#f39c12' }}>{s.gpa}</Typography>
-                    <Box sx={{ width: 60, height: 4, bgcolor: '#e2e8f0', borderRadius: 2, overflow: 'hidden' }}><Box sx={{ width: `${Math.min(s.gpa / 4 * 100, 100)}%`, height: '100%', bgcolor: s.gpa >= 3.5 ? '#27ae60' : s.gpa >= 2.5 ? '#2980b9' : '#f39c12', borderRadius: 2 }} /></Box>
+                    <Typography variant="body2" sx={{ fontWeight: 700, color: s.gpa >= 3.5 ? '#34d399' : s.gpa >= 2.5 ? '#38bdf8' : '#fbbf24' }}>{s.gpa}</Typography>
+                    <Box sx={{ width: 60, height: 4, bgcolor: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}><Box sx={{ width: `${Math.min(s.gpa / 4 * 100, 100)}%`, height: '100%', bgcolor: s.gpa >= 3.5 ? '#34d399' : s.gpa >= 2.5 ? '#38bdf8' : '#fbbf24', borderRadius: 2 }} /></Box>
                   </Box></TableCell>
                   <TableCell><Chip label={s.status} color={statusColor[s.status] || 'default'} size="small" sx={{ fontWeight: 600, textTransform: 'capitalize' }} /></TableCell>
                 </TableRow>
               ))}
-              {filtered.length === 0 && <TableRow><TableCell colSpan={6} align="center" sx={{ py: 6, color: '#5a6a7a' }}>No students found.</TableCell></TableRow>}
+              {filtered.length === 0 && <TableRow><TableCell colSpan={6} align="center" sx={{ py: 6, color: 'text.secondary' }}>No students found.</TableCell></TableRow>}
             </TableBody>
           </Table>
         </TableContainer>
@@ -132,7 +133,7 @@ const Students = () => {
                 {users.map(u => <MenuItem key={u._id} value={u._id}>{u.name} ({u.email})</MenuItem>)}
               </Select>
             </FormControl>
-            {touched.user && errors.user && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.user}</Typography>}
+            {touched.user && errors.user && <Typography variant="caption" sx={{ color: '#f87171', ml: 1.5 }}>{errors.user}</Typography>}
             <TextField fullWidth label="Student ID" margin="dense" required value={values.studentId} onChange={(e) => handleChange('studentId')(e)} onBlur={handleBlur('studentId')} error={touched.studentId && !!errors.studentId} helperText={touched.studentId && errors.studentId} />
             <TextField fullWidth label="Program" margin="dense" required value={values.program} onChange={(e) => handleChange('program')(e)} onBlur={handleBlur('program')} error={touched.program && !!errors.program} helperText={touched.program && errors.program} />
             <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
@@ -148,7 +149,7 @@ const Students = () => {
                 <MenuItem value="suspended">Suspended</MenuItem>
                 <MenuItem value="withdrawn">Withdrawn</MenuItem>
               </Select>
-              {touched.status && errors.status && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.status}</Typography>}
+              {touched.status && errors.status && <Typography variant="caption" sx={{ color: '#f87171', ml: 1.5 }}>{errors.status}</Typography>}
             </FormControl>
           </DialogContent>
           <DialogActions sx={{ px: 3, pb: 3 }}>

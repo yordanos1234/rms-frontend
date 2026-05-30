@@ -15,11 +15,12 @@ import Reports from './pages/Reports';
 import Announcements from './pages/Announcements';
 import Users from './pages/Users';
 import Profile from './pages/Profile';
-import { CircularProgress, Box } from '@mui/material';
+import { Box } from '@mui/material';
+import { ModernSpinner } from './components/ModernSpinner';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress /></Box>;
+  if (loading) return <ModernSpinner message="Loading..." />;
   if (!user) return <Navigate to="/login" />;
   if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/dashboard" />;
   return <Layout>{children}</Layout>;

@@ -4,12 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from 'notistack';
 import {
   Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Chip, CircularProgress, Button, Dialog, DialogTitle, DialogContent,
+  Paper, Chip, Button, Dialog, DialogTitle, DialogContent,
   TextField, DialogActions, FormControl, InputLabel, Select, MenuItem, Fade, Avatar,
   IconButton
 } from '@mui/material';
 import { Add, CheckCircle, Cancel } from '@mui/icons-material';
 import { useFormValidation, v } from '../hooks/useFormValidation';
+import { ModernSpinner } from '../components/ModernSpinner';
 
 const Grades = () => {
   const { user } = useAuth();
@@ -57,11 +58,11 @@ const Grades = () => {
   };
 
   const getGradeColor = (grade) => {
-    if (['A+','A','A-'].includes(grade)) return '#27ae60';
-    if (['B+','B','B-'].includes(grade)) return '#2980b9';
-    if (['C+','C','C-'].includes(grade)) return '#f39c12';
+    if (['A+','A','A-'].includes(grade)) return '#34d399';
+    if (['B+','B','B-'].includes(grade)) return '#38bdf8';
+    if (['C+','C','C-'].includes(grade)) return '#fbbf24';
     if (grade === 'D') return '#e67e22';
-    return '#c0392b';
+    return '#f87171';
   };
 
   const handleSubmit = async () => {
@@ -105,14 +106,14 @@ const Grades = () => {
     } catch (err) { enqueueSnackbar('Failed to reject grade', { variant: 'error' }); }
   };
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress size={48} sx={{ color: '#0f4c81' }} /></Box>;
+  if (loading) return <ModernSpinner message="Loading grades..." />;
 
   return (
     <Fade in timeout={400}>
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a2a3a', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Grades</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>Grades</Typography>
             <Typography variant="body2" color="text.secondary">View and manage student academic grades</Typography>
           </Box>
           {user.role === 'instructor' && (
@@ -122,7 +123,7 @@ const Grades = () => {
 
         <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
           <Table>
-            <TableHead><TableRow sx={{ bgcolor: '#0f4c81' }}>
+            <TableHead><TableRow sx={{ bgcolor: 'rgba(15,76,129,0.4)' }}>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Student</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 700 }}>Course</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 700 }} align="center">Midterm</TableCell>
@@ -137,16 +138,16 @@ const Grades = () => {
               {grades.map((g) => (
                 <TableRow key={g._id} hover sx={{ '&:hover': { bgcolor: '#f8fafc' } }}>
                   <TableCell><Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Avatar sx={{ width: 32, height: 32, bgcolor: '#0f4c81', fontSize: 13 }}>{g.student?.user?.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
+                    <Avatar sx={{ width: 32, height: 32, bgcolor: 'rgba(15,76,129,0.4)', fontSize: 13 }}>{g.student?.user?.name?.split(' ').map(n=>n[0]).slice(0,2).join('')}</Avatar>
                     <Typography variant="body2" sx={{ fontWeight: 600 }}>{g.student?.user?.name || g.student?.studentId}</Typography>
                   </Box></TableCell>
-                  <TableCell><Typography variant="body2" sx={{ fontWeight: 600 }}>{g.course?.courseCode}</Typography><Typography variant="caption" sx={{ color: '#5a6a7a' }}>{g.course?.title}</Typography></TableCell>
+                  <TableCell><Typography variant="body2" sx={{ fontWeight: 600 }}>{g.course?.courseCode}</Typography><Typography variant="caption" sx={{ color: 'text.secondary' }}>{g.course?.title}</Typography></TableCell>
                   <TableCell align="center">{g.marks?.midterm}</TableCell>
                   <TableCell align="center">{g.marks?.assignment}</TableCell>
                   <TableCell align="center">{g.marks?.final}</TableCell>
                   <TableCell align="center"><Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
                     <Typography variant="body2" sx={{ fontWeight: 700, minWidth: 28 }}>{g.marks?.total}</Typography>
-                    <Box sx={{ width: 50, height: 5, bgcolor: '#e2e8f0', borderRadius: 2, overflow: 'hidden' }}><Box sx={{ width: `${Math.min((g.marks?.total || 0) / 100 * 100, 100)}%`, height: '100%', bgcolor: getGradeColor(g.grade), borderRadius: 2 }} /></Box>
+                    <Box sx={{ width: 50, height: 5, bgcolor: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}><Box sx={{ width: `${Math.min((g.marks?.total || 0) / 100 * 100, 100)}%`, height: '100%', bgcolor: getGradeColor(g.grade), borderRadius: 2 }} /></Box>
                   </Box></TableCell>
                   <TableCell align="center"><Chip label={g.grade} size="small" sx={{ bgcolor: getGradeColor(g.grade) + '18', color: getGradeColor(g.grade), fontWeight: 800, minWidth: 40 }} /></TableCell>
                   <TableCell align="center"><Chip label={g.status} size="small" color={g.status === 'approved' ? 'success' : g.status === 'submitted' ? 'warning' : 'default'} sx={{ fontWeight: 600, textTransform: 'capitalize' }} /></TableCell>
@@ -162,7 +163,7 @@ const Grades = () => {
                   )}
                 </TableRow>
               ))}
-              {grades.length === 0 && <TableRow><TableCell colSpan={9} align="center" sx={{ py: 6, color: '#5a6a7a' }}>No grades found.</TableCell></TableRow>}
+              {grades.length === 0 && <TableRow><TableCell colSpan={9} align="center" sx={{ py: 6, color: 'text.secondary' }}>No grades found.</TableCell></TableRow>}
             </TableBody>
           </Table>
         </TableContainer>
@@ -175,14 +176,14 @@ const Grades = () => {
               <Select value={values.student} label="Student" onChange={(e) => handleChange('student')(e)} onBlur={handleBlur('student')}>
                 {students.map(s => <MenuItem key={s._id} value={s._id}>{s.user?.name} ({s.studentId})</MenuItem>)}
               </Select>
-              {touched.student && errors.student && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.student}</Typography>}
+              {touched.student && errors.student && <Typography variant="caption" sx={{ color: '#f87171', ml: 1.5 }}>{errors.student}</Typography>}
             </FormControl>
             <FormControl fullWidth margin="dense" error={touched.course && !!errors.course}>
               <InputLabel>Course</InputLabel>
               <Select value={values.course} label="Course" onChange={(e) => handleChange('course')(e)} onBlur={handleBlur('course')}>
                 {courses.map(c => <MenuItem key={c._id} value={c._id}>{c.courseCode} - {c.title}</MenuItem>)}
               </Select>
-              {touched.course && errors.course && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.course}</Typography>}
+              {touched.course && errors.course && <Typography variant="caption" sx={{ color: '#f87171', ml: 1.5 }}>{errors.course}</Typography>}
             </FormControl>
             <Box sx={{ display: 'flex', gap: 2, mt: 1, flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField fullWidth label="Midterm" type="number" value={values.midterm} onChange={(e) => handleChange('midterm')(e)} onBlur={handleBlur('midterm')} error={touched.midterm && !!errors.midterm} helperText={touched.midterm && errors.midterm} />
