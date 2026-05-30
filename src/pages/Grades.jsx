@@ -9,6 +9,7 @@ import {
   IconButton
 } from '@mui/material';
 import { Add, CheckCircle, Cancel } from '@mui/icons-material';
+import { useFormValidation, v } from '../hooks/useFormValidation';
 
 const Grades = () => {
   const { user } = useAuth();
@@ -18,8 +19,32 @@ const Grades = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
-  const [form, setForm] = useState({ student: '', course: '', marks: { midterm: '', assignment: '', final: '' } });
+
+  const { values, errors, touched, handleChange, handleBlur, validateAll, resetForm } = useFormValidation(
+    { student: '', course: '', midterm: '', assignment: '', final: '' },
+    {
+      student: [v.required('Please select a student')],
+      course: [v.required('Please select a course')],
+      midterm: [
+        v.required('Midterm mark is required'),
+        v.isNumber('Must be a number'),
+        v.min(0, 'Must be at least 0'),
+        v.max(100, 'Must be at most 100'),
+      ],
+      assignment: [
+        v.required('Assignment mark is required'),
+        v.isNumber('Must be a number'),
+        v.min(0, 'Must be at least 0'),
+        v.max(100, 'Must be at most 100'),
+      ],
+      final: [
+        v.required('Final mark is required'),
+        v.isNumber('Must be a number'),
+        v.min(0, 'Must be at least 0'),
+        v.max(100, 'Must be at most 100'),
+      ],
+    }
+  );
 
   useEffect(() => { fetchData(); }, []);
 
@@ -39,34 +64,25 @@ const Grades = () => {
     return '#c0392b';
   };
 
-  const validateGradeForm = () => {
-    const errs = {};
-    if (!form.student) errs.student = 'Please select a student';
-    if (!form.course) errs.course = 'Please select a course';
-    const mid = Number(form.marks.midterm);
-    if (form.marks.midterm === '' || isNaN(mid) || mid < 0 || mid > 100) errs.midterm = 'Must be between 0 and 100';
-    const asg = Number(form.marks.assignment);
-    if (form.marks.assignment === '' || isNaN(asg) || asg < 0 || asg > 100) errs.assignment = 'Must be between 0 and 100';
-    const fin = Number(form.marks.final);
-    if (form.marks.final === '' || isNaN(fin) || fin < 0 || fin > 100) errs.final = 'Must be between 0 and 100';
-    setFormErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
-
   const handleSubmit = async () => {
-    if (!validateGradeForm()) { enqueueSnackbar('Please fix the errors in the form', { variant: 'warning' }); return; }
+    if (!validateAll()) { enqueueSnackbar('Please fix the errors in the form', { variant: 'warning' }); return; }
     try {
-      const total = Number(form.marks.midterm) + Number(form.marks.assignment) + Number(form.marks.final);
+      const total = Number(values.midterm) + Number(values.assignment) + Number(values.final);
       let grade = 'F';
       if (total >= 90) grade = 'A+'; else if (total >= 85) grade = 'A'; else if (total >= 80) grade = 'A-';
       else if (total >= 75) grade = 'B+'; else if (total >= 70) grade = 'B'; else if (total >= 65) grade = 'B-';
       else if (total >= 60) grade = 'C+'; else if (total >= 55) grade = 'C'; else if (total >= 50) grade = 'C-';
       else if (total >= 45) grade = 'D';
-      await axios.post('/api/grades', { ...form, enrollment: '000000000000000000000000', marks: { ...form.marks, total }, grade });
+      await axios.post('/api/grades', {
+        student: values.student,
+        course: values.course,
+        enrollment: '000000000000000000000000',
+        marks: { midterm: Number(values.midterm), assignment: Number(values.assignment), final: Number(values.final), total },
+        grade
+      });
       enqueueSnackbar('Grade submitted successfully', { variant: 'success' });
       setOpen(false);
-      setForm({ student: '', course: '', marks: { midterm: '', assignment: '', final: '' } });
-      setFormErrors({});
+      resetForm();
       fetchData();
     } catch (err) {
       enqueueSnackbar(err.response?.data?.message || 'Failed to submit grade', { variant: 'error' });
@@ -154,24 +170,24 @@ const Grades = () => {
         <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
           <DialogTitle sx={{ fontWeight: 700 }}>Submit Grade</DialogTitle>
           <DialogContent>
-            <FormControl fullWidth margin="dense" error={!!formErrors.student}>
+            <FormControl fullWidth margin="dense" error={touched.student && !!errors.student}>
               <InputLabel>Student</InputLabel>
-              <Select value={form.student} label="Student" onChange={e => setForm({ ...form, student: e.target.value })}>
+              <Select value={values.student} label="Student" onChange={(e) => handleChange('student')(e)} onBlur={handleBlur('student')}>
                 {students.map(s => <MenuItem key={s._id} value={s._id}>{s.user?.name} ({s.studentId})</MenuItem>)}
               </Select>
+              {touched.student && errors.student && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.student}</Typography>}
             </FormControl>
-            {formErrors.student && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{formErrors.student}</Typography>}
-            <FormControl fullWidth margin="dense" error={!!formErrors.course}>
+            <FormControl fullWidth margin="dense" error={touched.course && !!errors.course}>
               <InputLabel>Course</InputLabel>
-              <Select value={form.course} label="Course" onChange={e => setForm({ ...form, course: e.target.value })}>
+              <Select value={values.course} label="Course" onChange={(e) => handleChange('course')(e)} onBlur={handleBlur('course')}>
                 {courses.map(c => <MenuItem key={c._id} value={c._id}>{c.courseCode} - {c.title}</MenuItem>)}
               </Select>
+              {touched.course && errors.course && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.course}</Typography>}
             </FormControl>
-            {formErrors.course && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{formErrors.course}</Typography>}
             <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
-              <TextField fullWidth label="Midterm" type="number" value={form.marks.midterm} onChange={e => setForm({ ...form, marks: { ...form.marks, midterm: e.target.value } })} error={!!formErrors.midterm} helperText={formErrors.midterm} />
-              <TextField fullWidth label="Assignment" type="number" value={form.marks.assignment} onChange={e => setForm({ ...form, marks: { ...form.marks, assignment: e.target.value } })} error={!!formErrors.assignment} helperText={formErrors.assignment} />
-              <TextField fullWidth label="Final" type="number" value={form.marks.final} onChange={e => setForm({ ...form, marks: { ...form.marks, final: e.target.value } })} error={!!formErrors.final} helperText={formErrors.final} />
+              <TextField fullWidth label="Midterm" type="number" value={values.midterm} onChange={(e) => handleChange('midterm')(e)} onBlur={handleBlur('midterm')} error={touched.midterm && !!errors.midterm} helperText={touched.midterm && errors.midterm} />
+              <TextField fullWidth label="Assignment" type="number" value={values.assignment} onChange={(e) => handleChange('assignment')(e)} onBlur={handleBlur('assignment')} error={touched.assignment && !!errors.assignment} helperText={touched.assignment && errors.assignment} />
+              <TextField fullWidth label="Final" type="number" value={values.final} onChange={(e) => handleChange('final')(e)} onBlur={handleBlur('final')} error={touched.final && !!errors.final} helperText={touched.final && errors.final} />
             </Box>
           </DialogContent>
           <DialogActions sx={{ px: 3, pb: 3 }}>

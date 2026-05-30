@@ -24,6 +24,7 @@ const Announcements = () => {
     {
       title: [v.required('Title is required'), v.minLength(3, 'At least 3 characters'), v.maxLength(200, 'At most 200 characters')],
       content: [v.required('Content is required'), v.minLength(5, 'At least 5 characters'), v.maxLength(5000, 'At most 5000 characters')],
+      targetAudience: [v.required('Target audience is required')],
     }
   );
 
@@ -124,15 +125,16 @@ const Announcements = () => {
           <DialogContent>
             <TextField fullWidth label="Title" margin="dense" required value={values.title} onChange={(e) => handleChange('title')(e)} onBlur={handleBlur('title')} error={touched.title && !!errors.title} helperText={touched.title && errors.title} />
             <TextField fullWidth label="Content" margin="dense" multiline rows={4} required value={values.content} onChange={(e) => handleChange('content')(e)} onBlur={handleBlur('content')} error={touched.content && !!errors.content} helperText={touched.content && errors.content} />
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth margin="dense" error={touched.targetAudience && !!errors.targetAudience}>
               <InputLabel>Target Audience</InputLabel>
-              <Select value={values.targetAudience} label="Target Audience" onChange={(e) => handleChange('targetAudience')(e)}>
+              <Select value={values.targetAudience} label="Target Audience" onChange={(e) => handleChange('targetAudience')(e)} onBlur={handleBlur('targetAudience')}>
                 <MenuItem value="all">All</MenuItem>
                 <MenuItem value="students">Students</MenuItem>
                 <MenuItem value="instructors">Instructors</MenuItem>
                 <MenuItem value="registrar">Registrar Staff</MenuItem>
                 <MenuItem value="department_heads">Department Heads</MenuItem>
               </Select>
+              {touched.targetAudience && errors.targetAudience && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.targetAudience}</Typography>}
             </FormControl>
           </DialogContent>
           <DialogActions sx={{ px: 3, pb: 3 }}>

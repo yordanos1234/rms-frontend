@@ -30,6 +30,7 @@ const Courses = () => {
       department: [v.required('Department is required'), v.minLength(2, 'Must be at least 2 characters')],
       year: [v.required('Year is required'), v.isNumber('Must be a number'), v.min(1, 'Must be at least 1'), v.max(7, 'Must be at most 7'), v.integer('Must be a whole number')],
       semester: [v.required('Semester is required')],
+      description: [v.maxLength(1000, 'Description must be at most 1000 characters')],
     }
   );
 
@@ -164,6 +165,7 @@ const Courses = () => {
                 <MenuItem value="1st">1st Semester</MenuItem>
                 <MenuItem value="2nd">2nd Semester</MenuItem>
               </Select>
+              {touched.semester && errors.semester && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.semester}</Typography>}
             </FormControl>
             <TextField fullWidth label="Department" margin="dense" value={values.department} onChange={(e) => handleChange('department')(e)} onBlur={handleBlur('department')} error={touched.department && !!errors.department} helperText={touched.department && errors.department} />
             <TextField fullWidth label="Description" margin="dense" multiline rows={3} value={values.description} onChange={(e) => handleChange('description')(e)} />

@@ -136,6 +136,7 @@ const Users = () => {
                 <MenuItem value="department_head">Department Head</MenuItem>
                 <MenuItem value="admin">Administrator</MenuItem>
               </Select>
+              {touched.role && errors.role && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.role}</Typography>}
             </FormControl>
             <TextField fullWidth label="Department" margin="dense" value={values.department} onChange={(e) => handleChange('department')(e)} onBlur={handleBlur('department')} error={touched.department && !!errors.department} helperText={touched.department && errors.department} />
             <TextField fullWidth label="Phone" margin="dense" placeholder="0911223344" value={values.phone} onChange={(e) => handleChange('phone')(e)} onBlur={handleBlur('phone')} error={touched.phone && !!errors.phone} helperText={touched.phone && errors.phone} />

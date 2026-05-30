@@ -4,8 +4,14 @@ import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { SnackbarProvider } from 'notistack'
+import axios from 'axios'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
+
+// Set API base URL for production
+axios.defaults.baseURL = import.meta.env.PROD
+  ? 'https://registral-yordi-backend.onrender.com'
+  : ''
 
 const theme = createTheme({
   palette: {

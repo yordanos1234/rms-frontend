@@ -139,6 +139,7 @@ const Students = () => {
                 <MenuItem value="suspended">Suspended</MenuItem>
                 <MenuItem value="withdrawn">Withdrawn</MenuItem>
               </Select>
+              {touched.status && errors.status && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.status}</Typography>}
             </FormControl>
           </DialogContent>
           <DialogActions sx={{ px: 3, pb: 3 }}>

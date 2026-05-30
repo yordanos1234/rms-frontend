@@ -9,6 +9,7 @@ import {
   IconButton
 } from '@mui/material';
 import { Add, CheckCircle, Delete } from '@mui/icons-material';
+import { useFormValidation, v } from '../hooks/useFormValidation';
 
 const Documents = () => {
   const { user } = useAuth();
@@ -16,8 +17,17 @@ const Documents = () => {
   const [docs, setDocs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
-  const [form, setForm] = useState({ type: 'transcript', purpose: '' });
+
+  const { values, errors, touched, handleChange, handleBlur, validateAll, resetForm } = useFormValidation(
+    { type: 'transcript', purpose: '' },
+    {
+      type: [v.required('Please select a document type')],
+      purpose: [
+        v.minLength(2, 'Purpose must be at least 2 characters'),
+        v.maxLength(500, 'Purpose must be at most 500 characters'),
+      ],
+    }
+  );
 
   useEffect(() => { fetchDocs(); }, []);
 
@@ -26,21 +36,12 @@ const Documents = () => {
       .catch(() => { setLoading(false); enqueueSnackbar('Failed to load documents', { variant: 'error' }); });
   };
 
-  const validateDocForm = () => {
-    const errs = {};
-    if (!form.type) errs.type = 'Please select a document type';
-    if (form.purpose && form.purpose.length < 2) errs.purpose = 'Purpose must be at least 2 characters';
-    if (form.purpose && form.purpose.length > 500) errs.purpose = 'Purpose must be at most 500 characters';
-    setFormErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
-
   const handleRequest = async () => {
-    if (!validateDocForm()) { enqueueSnackbar('Please fix the errors', { variant: 'warning' }); return; }
+    if (!validateAll()) { enqueueSnackbar('Please fix the errors', { variant: 'warning' }); return; }
     try {
-      await axios.post('/api/documents', form);
+      await axios.post('/api/documents', values);
       enqueueSnackbar('Document requested successfully', { variant: 'success' });
-      setOpen(false); setForm({ type: 'transcript', purpose: '' }); setFormErrors({}); fetchDocs();
+      setOpen(false); resetForm(); fetchDocs();
     } catch (err) { enqueueSnackbar(err.response?.data?.message || 'Failed to request document', { variant: 'error' }); }
   };
 
@@ -126,20 +127,20 @@ const Documents = () => {
         <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
           <DialogTitle sx={{ fontWeight: 700 }}>Request Document</DialogTitle>
           <DialogContent>
-            <FormControl fullWidth margin="dense" error={!!formErrors.type}>
+            <FormControl fullWidth margin="dense" error={touched.type && !!errors.type}>
               <InputLabel>Document Type</InputLabel>
-              <Select value={form.type} label="Document Type" onChange={e => setForm({ ...form, type: e.target.value })}>
+              <Select value={values.type} label="Document Type" onChange={(e) => handleChange('type')(e)} onBlur={handleBlur('type')}>
                 <MenuItem value="transcript">Transcript</MenuItem>
                 <MenuItem value="enrollment_letter">Enrollment Letter</MenuItem>
                 <MenuItem value="certificate">Certificate</MenuItem>
                 <MenuItem value="clearance">Clearance</MenuItem>
                 <MenuItem value="id_card">ID Card</MenuItem>
               </Select>
+              {touched.type && errors.type && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{errors.type}</Typography>}
             </FormControl>
-            {formErrors.type && <Typography variant="caption" sx={{ color: '#c0392b', ml: 1.5 }}>{formErrors.type}</Typography>}
             <TextField fullWidth label="Purpose" margin="dense" multiline rows={2} placeholder="e.g. Graduation application, Internship, Job application..."
-              value={form.purpose} onChange={e => setForm({ ...form, purpose: e.target.value })}
-              error={!!formErrors.purpose} helperText={formErrors.purpose} />
+              value={values.purpose} onChange={(e) => handleChange('purpose')(e)} onBlur={handleBlur('purpose')}
+              error={touched.purpose && !!errors.purpose} helperText={touched.purpose && errors.purpose} />
           </DialogContent>
           <DialogActions sx={{ px: 3, pb: 3 }}>
             <Button onClick={() => setOpen(false)} sx={{ textTransform: 'none', fontWeight: 600 }}>Cancel</Button>
